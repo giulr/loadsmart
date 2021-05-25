@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[5]:
+# In[16]:
 
 
 import pandas.io.sql as psql
 import psycopg2 as pg
 
 
-# In[9]:
+# In[18]:
 
 
 def connect():
@@ -26,6 +26,7 @@ def insert(df, connection, table_name):
 
     for i,row in df.iterrows():
         insert_script = "INSERT INTO " + table_name +   "(" +cols + ") VALUES (" + "%s,"*(len(row)-1) + "%s)"
+        on_duplicate = "ON CONFLICT ("+cols+" )  DO NOTHING"
         connection.cursor().execute(insert_script, tuple(row))
     
     connection.commit()
